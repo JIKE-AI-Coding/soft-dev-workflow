@@ -95,4 +95,116 @@ This skill depends on the following external Claude Code skills:
 
 This is a Claude Code skill. It is invoked automatically when you use trigger commands like `!pm-analyze`, `!pm-design`, etc.
 
-For full usage examples, see `SKILL.md`.
+### How to Start
+
+1. **Start with requirements**: Tell Claude about your project idea or feature request
+2. **Use trigger commands**: Invoke workflow phases with `!pm-*` commands
+3. **Follow the pipeline**: Each phase outputs artifacts used by the next
+
+### Basic Workflow Example
+
+```
+1. User: "我需要一个用户登录功能"
+2. User: "!pm-analyze"  → [PM] generates PRD
+3. User: "!pm-design"   → [Arch] generates TECH_DESIGN + TASK_LIST
+4. User: "!pm-review"   → [Senior-Arch] reviews and approves
+5. User: "!pm-dev"      → [Dev] implements with TDD
+6. User: "!pm-test"     → [QA] tests and reports bugs
+7. User: "!pm-deploy"   → [DevOps] deploys
+8. User: "!pm-uat"      → [PM] accepts
+```
+
+### Trigger Command Examples
+
+#### Start Requirements Analysis
+```
+!pm-analyze
+```
+Claude will act as [PM] and generate `docs/PRD.md` from your requirements.
+
+#### Start Technical Design
+```
+!pm-design
+```
+Claude will act as [Arch] and generate `docs/TECH_DESIGN.md` and `docs/TASK_LIST.md`.
+
+#### Review Technical Design
+```
+!pm-review
+```
+Claude will act as [Senior-Arch] and review the technical design. If rejected, it returns to design phase.
+
+#### Implement Development
+```
+!pm-dev
+```
+Claude will act as [Dev], reading TASK_LIST and implementing tasks with TDD (test → fail → code → pass).
+
+#### Run Testing
+```
+!pm-test
+```
+Claude will act as [QA], run integration tests, and log bugs to `docs/ISSUE_LOG.md`.
+
+#### Deploy to Environment
+```
+!pm-deploy
+```
+Claude will act as [DevOps], deploying to test → staging → production.
+
+#### User Acceptance Testing
+```
+!pm-uat
+```
+Claude will act as [PM], verifying the implementation against PRD acceptance criteria.
+
+### Typical Project Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 1: Requirements Analysis                              │
+│  Input: User's project idea                                   │
+│  Output: docs/PRD.md (Draft → Confirmed)                     │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 2: Technical Design                                   │
+│  Input: Confirmed PRD                                        │
+│  Output: docs/TECH_DESIGN.md, docs/TASK_LIST.md              │
+│  External: ui-ux-pro-max skill for UI design                │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 3: Architecture Review                               │
+│  Input: TECH_DESIGN.md                                      │
+│  Output: Approved/Rejected                                  │
+│  If Rejected → return to Phase 2                            │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 4: Development                                        │
+│  Input: TASK_LIST.md                                        │
+│  Output: Implemented code, tests passing                    │
+│  Order: Backend first → Frontend second                    │
+│  External: frontend-design skill for UI                    │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 5: Testing                                            │
+│  Input: Deployed code                                       │
+│  Output: Test report, docs/ISSUE_LOG.md                     │
+│  Bug flow: Open → Fixed → Verified                          │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 6: Deployment                                         │
+│  Order: Test → Staging → Production                         │
+│  Rollback on health check failure                           │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Phase 7: UAT                                                │
+│  Input: Deployed to staging                                 │
+│  Output: PM acceptance (Done or Rejected)                    │
+└─────────────────────────────────────────────────────────────┘
+```
