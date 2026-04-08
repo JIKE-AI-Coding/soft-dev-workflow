@@ -1,6 +1,6 @@
 # Development Workflow Orchestrator
 
-> **中文文档**: [README_CN.md](../README_CN.md)
+> **中文文档**: [README_CN.md](README_CN.md)
 
 A Claude Code skill that orchestrates the complete software development lifecycle from requirements analysis through deployment.
 
