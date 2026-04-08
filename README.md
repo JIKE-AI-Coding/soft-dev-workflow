@@ -82,6 +82,15 @@ This skill implements a 7-phase workflow pipeline with clearly defined roles:
 4. **Iteration-based**: Large projects decompose into iterations
 5. **PRD Closure Validation**: Every feature must have complete start→end flow
 
+## External Dependencies
+
+This skill depends on the following external Claude Code skills:
+
+| Skill | Purpose | Used In Phase |
+|:---|:---|:---|
+| `ui-ux-pro-max` | UI/UX design system, component specifications, design review | Phase 2: Technical Design |
+| `frontend-design` | Frontend development with design system, component implementation | Phase 4: Development |
+
 ## Usage
 
 This is a Claude Code skill. It is invoked automatically when you use trigger commands like `!pm-analyze`, `!pm-design`, etc.
